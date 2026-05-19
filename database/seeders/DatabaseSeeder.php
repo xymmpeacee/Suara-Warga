@@ -2,24 +2,29 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Buat roles (firstOrCreate biar ga error kalau udah ada)
+        Role::firstOrCreate(['name' => 'admin']);
+        Role::firstOrCreate(['name' => 'petugas']);
+        Role::firstOrCreate(['name' => 'warga']);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Buat akun admin
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@suarawarga.com'],
+            [
+                'name'     => 'Admin SuaraWarga',
+                'password' => Hash::make('admin123'),
+            ]
+        );
+
+        $admin->assignRole('admin');
     }
 }
