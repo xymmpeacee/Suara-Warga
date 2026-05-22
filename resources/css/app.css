@@ -1,3 +1,168 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ===== Google Fonts: Inter ===== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&display=swap');
+
+/* ===== Smooth scroll ===== */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ===== Scrollbar styling ===== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #F3F4F6;
+}
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* ===== Intersection Observer animation triggers ===== */
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-left {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+.reveal-right {
+    opacity: 0;
+    transform: translateX(32px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ===== Stagger children ===== */
+.reveal-stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+
+/* ===== Navbar active link pill ===== */
+.nav-link-active {
+    @apply bg-primary text-white px-4 py-1.5 rounded-full text-sm font-medium;
+}
+.nav-link {
+    @apply text-gray-600 hover:text-primary px-3 py-1.5 text-sm font-medium transition-colors duration-200 relative;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: #1B3FE4;
+    transition: width 0.3s ease, left 0.3s ease;
+}
+.nav-link:hover::after {
+    width: 60%;
+    left: 20%;
+}
+
+/* ===== Hero gradient overlay ===== */
+.hero-pattern {
+    background-image:
+        radial-gradient(ellipse at 20% 80%, rgba(255, 214, 0, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(27, 63, 228, 0.2) 0%, transparent 70%);
+}
+
+/* ===== Card hover lift ===== */
+.card-lift {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
+}
+
+/* ===== Feature card hover border ===== */
+.feature-card {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.feature-card:hover {
+    border-color: #1B3FE4;
+    box-shadow: 0 0 0 1px #1B3FE4;
+}
+
+/* ===== CTA button hover ===== */
+.btn-primary-cta {
+    transition: filter 0.2s ease, transform 0.2s ease;
+}
+.btn-primary-cta:hover {
+    filter: brightness(1.08);
+    transform: scale(1.02);
+}
+.btn-secondary-cta {
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.btn-secondary-cta:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: scale(1.02);
+}
+
+/* ===== Status pills ===== */
+.pill-diproses {
+    @apply bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-0.5 rounded-full;
+}
+.pill-selesai {
+    @apply bg-green-100 text-green-700 text-xs font-semibold px-2.5 py-0.5 rounded-full;
+}
+.pill-pending {
+    @apply bg-yellow-100 text-yellow-700 text-xs font-semibold px-2.5 py-0.5 rounded-full;
+}
+
+/* ===== Pulsing green dot ===== */
+.pulse-ring {
+    animation: pulseRing 2s ease-in-out infinite;
+}
+@keyframes pulseRing {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+    }
+}
+
+/* ===== Mobile menu slide ===== */
+.mobile-menu {
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.mobile-menu.open {
+    transform: translateX(0);
+}
