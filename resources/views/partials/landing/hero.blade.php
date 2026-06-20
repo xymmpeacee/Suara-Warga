@@ -27,11 +27,11 @@
 
         <!-- CTA Buttons -->
         <div class="flex flex-wrap gap-3 mb-12" style="animation: fadeInUp 0.6s ease-out 0.4s both;">
-            <a href="#" class="btn-primary-cta inline-flex items-center gap-2 bg-accent text-gray-900 font-semibold px-7 py-3 rounded-full text-sm shadow-lg shadow-accent/30">
+            <a href="{{ route('buat-aduan') }}" class="btn-primary-cta inline-flex items-center gap-2 bg-accent text-gray-900 font-semibold px-7 py-3 rounded-full text-sm shadow-lg shadow-accent/30">
                 Buat Aduan
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg>
             </a>
-            <a href="#" class="btn-secondary-cta inline-flex items-center gap-2 border border-white/40 text-white font-medium px-7 py-3 rounded-full text-sm backdrop-blur-sm">
+            <a href="{{ route('lacak-status') }}" class="btn-secondary-cta inline-flex items-center gap-2 border border-white/40 text-white font-medium px-7 py-3 rounded-full text-sm backdrop-blur-sm">
                 Lacak Status
             </a>
         </div>
@@ -39,15 +39,15 @@
         <!-- Stats -->
         <div class="grid grid-cols-3 gap-3 max-w-md" style="animation: fadeInUp 0.6s ease-out 0.55s both;">
             <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-4 text-center">
-                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="6">0</div>
+                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="{{ $stats['total'] }}">0</div>
                 <div class="text-xs text-white/60 mt-1">Total Aduan</div>
             </div>
             <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-4 text-center">
-                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="2">0</div>
+                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="{{ $stats['diproses'] }}">0</div>
                 <div class="text-xs text-white/60 mt-1">Diproses</div>
             </div>
             <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl px-4 py-4 text-center">
-                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="2">0</div>
+                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="{{ $stats['selesai'] }}">0</div>
                 <div class="text-xs text-white/60 mt-1">Selesai</div>
             </div>
         </div>

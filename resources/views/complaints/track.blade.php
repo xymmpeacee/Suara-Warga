@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Lacak Status Aduan — SuaraWarga</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="font-sans antialiased text-gray-900 bg-gray-50">
+
+@include('partials.landing.navbar')
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    {{-- Header --}}
+    <div class="mb-8">
+        <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-2">Lacak Status</span>
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Pantau Status Aduan Warga</h1>
+        <p class="text-gray-500 mt-1">Cari berdasarkan kode tiket, judul, atau lokasi.</p>
+    </div>
+
+    {{-- Search & Filters --}}
+    <form method="GET" action="{{ route('lacak-status') }}" class="flex flex-col sm:flex-row gap-3 mb-8">
+        <div class="flex-1 relative">
+            <svg class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg>
+            <input type="text" name="search" value="{{ request('search') }}"
+                class="w-full pl-10 pr-4 py-3 rounded-xl border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm"
+                placeholder="Cari kode tiket, judul, atau lokasi...">
+        </div>
+        <select name="category" class="rounded-xl border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-3 px-4">
+            <option value="">Semua Kategori</option>
+            @foreach(\App\Models\Complaint::CATEGORY_LABELS as $val => $label)
+            <option value="{{ $val }}" {{ request('category') === $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
+        <select name="status" class="rounded-xl border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-3 px-4">
+            <option value="">Semua Status</option>
+            <option value="pending" {{ request('status') === 'pending' ? 'selected' : '' }}>Pending</option>
+            <option value="diproses" {{ request('status') === 'diproses' ? 'selected' : '' }}>Diproses</option>
+            <option value="selesai" {{ request('status') === 'selesai' ? 'selected' : '' }}>Selesai</option>
+            <option value="ditolak" {{ request('status') === 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+        </select>
+        <button type="submit" class="bg-primary text-white font-semibold px-6 py-3 rounded-xl text-sm hover:bg-primary-600 transition-colors">
+            Cari
+        </button>
+    </form>
+
+    {{-- Results --}}
+    @if($complaints->isEmpty())
+    <div class="text-center py-16">
+        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Zm3.75 11.625a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg>
+        <p class="text-gray-500 text-lg font-medium">Tidak ada aduan ditemukan</p>
+        <p class="text-gray-400 text-sm mt-1">Coba ubah kata kunci atau filter pencarian Anda.</p>
+    </div>
+    @else
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach($complaints as $complaint)
+            @include('complaints.partials._card', ['complaint' => $complaint])
+        @endforeach
+    </div>
+
+    {{-- Pagination --}}
+    <div class="mt-8">
+        {{ $complaints->links() }}
+    </div>
+    @endif
+</main>
+
+@include('partials.landing.footer')
+
+{{-- Detail Modal --}}
+@include('complaints.partials._detail-modal')
+
+<script>
+    // Mobile menu
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const menuClose = document.getElementById('mobile-menu-close');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOverlay = document.getElementById('mobile-menu-overlay');
+    if (menuBtn) {
+        menuBtn.addEventListener('click', () => { mobileMenu.classList.add('open'); menuOverlay.classList.remove('hidden'); document.body.style.overflow = 'hidden'; });
+        menuClose.addEventListener('click', () => { mobileMenu.classList.remove('open'); menuOverlay.classList.add('hidden'); document.body.style.overflow = ''; });
+        menuOverlay.addEventListener('click', () => { mobileMenu.classList.remove('open'); menuOverlay.classList.add('hidden'); document.body.style.overflow = ''; });
+    }
+</script>
+</body>
+</html>

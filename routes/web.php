@@ -1,35 +1,58 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Warga\LaporanController as WargaLaporanController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\UpvoteController;
+use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\LaporanController as AdminLaporanController;
-use App\Http\Controllers\Admin\KategoriController as AdminKategoriController;
-use App\Http\Controllers\Admin\PetugasController as AdminPetugasController;
-use App\Http\Controllers\Petugas\LaporanController as PetugasLaporanController;
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes (Landing, Buat Aduan, Lacak Status)
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $stats = [
+        'total' => \App\Models\Complaint::count(),
+        'diproses' => \App\Models\Complaint::where('status', 'diproses')->count(),
+        'selesai' => \App\Models\Complaint::where('status', 'selesai')->count(),
+    ];
+    $recentComplaints = \App\Models\Complaint::withCount('responses')->latest()->take(3)->get();
+    return view('welcome', compact('stats', 'recentComplaints'));
+})->name('home');
 
-// WARGA
-Route::middleware(['auth', 'role:warga'])->prefix('warga')->name('warga.')->group(function () {
-    Route::resource('laporan', WargaLaporanController::class)->only(['index', 'create', 'store', 'show']);
-});
+// Buat Aduan
+Route::get('/buat-aduan', [ComplaintController::class, 'create'])->name('buat-aduan');
+Route::post('/buat-aduan', [ComplaintController::class, 'store'])->name('buat-aduan.store');
+Route::get('/buat-aduan/sukses/{complaint}', [ComplaintController::class, 'success'])->name('buat-aduan.sukses');
 
-// PETUGAS
-Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->name('petugas.')->group(function () {
-    Route::resource('laporan', PetugasLaporanController::class)->only(['index', 'show']);
-    Route::post('laporan/{laporan}/respons', [PetugasLaporanController::class, 'respons'])->name('laporan.respons');
-});
+// Lacak Status
+Route::get('/lacak-status', [ComplaintController::class, 'index'])->name('lacak-status');
 
-// ADMIN
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('dashboard', AdminDashboardController::class)->name('dashboard');
-    Route::resource('laporan', AdminLaporanController::class)->only(['index', 'show']);
-    Route::post('laporan/{laporan}/respons', [AdminLaporanController::class, 'respons'])->name('laporan.respons');
-    Route::resource('kategori', AdminKategoriController::class);
-    Route::resource('petugas', AdminPetugasController::class);
-});
+// Detail aduan (JSON untuk modal)
+Route::get('/aduan/{complaint}', [ComplaintController::class, 'show'])->name('aduan.show');
 
-require __DIR__.'/auth.php';
+// Upvote
+Route::post('/aduan/{complaint}/upvote', [UpvoteController::class, 'store'])->name('aduan.upvote');
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes (guard: admin)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Auth (guest admin only)
+    Route::middleware('guest:admin')->group(function () {
+        Route::get('login', [AdminAuthController::class, 'showLogin'])->name('login');
+        Route::post('login', [AdminAuthController::class, 'login'])->name('login.submit');
+    });
+
+    // Protected (authenticated admin)
+    Route::middleware('auth:admin')->group(function () {
+        Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
+        Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+        Route::put('dashboard/{complaint}', [AdminDashboardController::class, 'update'])->name('dashboard.update');
+    });
+});
