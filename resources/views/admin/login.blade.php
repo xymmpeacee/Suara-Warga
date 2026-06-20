@@ -65,10 +65,6 @@
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2 hidden">
-                    <input type="checkbox" name="remember" id="remember" class="rounded border-gray-300 text-[#0d6efd] focus:ring-[#0d6efd]" checked>
-                </div>
-
                 <button type="submit" class="w-full mt-4 bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-bold py-3 rounded-xl text-sm shadow-[0_4px_14px_0_rgba(13,110,253,0.39)] transition-all">
                     Masuk sebagai Admin
                 </button>
