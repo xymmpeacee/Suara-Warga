@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="SuaraWarga — Platform aduan warga untuk melaporkan masalah lingkungan seperti jalan rusak, sampah menumpuk, dan lampu padam. Transparan, cepat, dan dapat dipertanggungjawabkan.">
     <title>SuaraWarga — Layanan Aduan Warga</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased text-gray-900 bg-gray-50">
@@ -15,6 +16,8 @@
     @include('partials.landing.aduan-terkini')
     @include('partials.landing.mengapa')
     @include('partials.landing.footer')
+
+    @include('complaints.partials._detail-modal')
 
     <script>
         // ===== Mobile Menu Toggle =====

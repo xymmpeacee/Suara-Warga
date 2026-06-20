@@ -15,9 +15,9 @@
 
             <!-- Nav Links (Desktop) -->
             <div class="hidden md:flex items-center gap-1">
-                <a href="#hero" class="nav-link-active">Beranda</a>
-                <a href="#aduan-terkini" class="nav-link">Buat Aduan</a>
-                <a href="#cara-kerja" class="nav-link">Lacak Status</a>
+                <a href="{{ route('home') }}" class="{{ Route::currentRouteName() === 'home' ? 'nav-link-active' : 'nav-link' }}">Beranda</a>
+                <a href="{{ route('buat-aduan') }}" class="{{ Route::currentRouteName() === 'buat-aduan' ? 'nav-link-active' : 'nav-link' }}">Buat Aduan</a>
+                <a href="{{ route('lacak-status') }}" class="{{ Route::currentRouteName() === 'lacak-status' ? 'nav-link-active' : 'nav-link' }}">Lacak Status</a>
             </div>
 
             <!-- Status + Mobile Toggle -->
@@ -45,9 +45,9 @@
             </button>
         </div>
         <div class="flex flex-col gap-2">
-            <a href="#hero" class="nav-link-active text-center">Beranda</a>
-            <a href="#aduan-terkini" class="nav-link text-center py-2.5">Buat Aduan</a>
-            <a href="#cara-kerja" class="nav-link text-center py-2.5">Lacak Status</a>
+            <a href="{{ route('home') }}" class="{{ Route::currentRouteName() === 'home' ? 'nav-link-active text-center py-2.5' : 'nav-link text-center py-2.5' }}">Beranda</a>
+            <a href="{{ route('buat-aduan') }}" class="{{ Route::currentRouteName() === 'buat-aduan' ? 'nav-link-active text-center py-2.5' : 'nav-link text-center py-2.5' }}">Buat Aduan</a>
+            <a href="{{ route('lacak-status') }}" class="{{ Route::currentRouteName() === 'lacak-status' ? 'nav-link-active text-center py-2.5' : 'nav-link text-center py-2.5' }}">Lacak Status</a>
         </div>
         <div class="flex items-center gap-2 mt-auto">
             <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 pulse-ring"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span></span>
