@@ -52,14 +52,14 @@ class Complaint extends Model
     ];
 
     /** Warna badge kategori */
-    public const CATEGORY_COLORS = [
-        'jalan_rusak' => 'bg-primary text-white',
-        'sampah' => 'bg-gray-600 text-white',
-        'penerangan' => 'bg-gray-600 text-white',
-        'drainase' => 'bg-cyan-600 text-white',
-        'fasilitas_umum' => 'bg-indigo-600 text-white',
-        'lainnya' => 'bg-gray-500 text-white',
-    ];
+   public const CATEGORY_COLORS = [
+    'jalan_rusak' => 'bg-primary text-white',
+    'sampah' => 'bg-primary text-white',
+    'penerangan' => 'bg-primary text-white',
+    'drainase' => 'bg-primary text-white',
+    'fasilitas_umum' => 'bg-primary text-white',
+    'lainnya' => 'bg-primary text-white',
+];
 
     public const PRIORITY_LABELS = [
         'rendah' => 'Rendah',
