@@ -1,59 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📢 SuaraWarga (Layanan Pengaduan Masyarakat)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Pengaduan Warga berbasis Web yang dikembangkan menggunakan **Laravel 11** dan **Tailwind CSS**. Sistem ini memungkinkan warga untuk melaporkan masalah infrastruktur, fasilitas umum, dan lain-lain, yang kemudian dapat dikelola oleh Admin.
 
-## About Laravel
+## 🚀 Fitur Utama
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Warga (Publik):**
+  - Membuat aduan/laporan dengan mudah (mendukung unggah foto bukti).
+  - Melacak status aduan menggunakan `Tracking ID`.
+  - Melihat aduan publik di halaman utama.
+  - Memberikan **Upvote** pada aduan warga lain.
+  - Notifikasi Email (Pembuatan aduan & Perubahan status oleh Admin).
+  
+- **Admin:**
+  - Login khusus via `/admin/login`.
+  - Dashboard interaktif untuk memonitor seluruh aduan.
+  - Memverifikasi, memproses, atau menyelesaikan aduan (mengubah status).
+  - Mengelola data secara *real-time*.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠 Panduan Instalasi (Untuk Tim Developer)
 
-## Learning Laravel
+Jika kamu baru saja melakukan `git pull` dari repository ini, pastikan untuk menjalankan perintah-perintah berikut agar database dan konfigurasi di lokal komputer kamu tersinkronisasi dengan yang terbaru.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 1. Perbarui Dependencies
+Buka terminal di dalam folder project dan jalankan:
+```bash
+composer install
+npm install
+npm run build
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Konfigurasi File Lingkungan (.env)
+Pastikan kamu sudah memiliki file `.env` (bisa di-*copy* dari `.env.example`).
+Atur bagian konfigurasi database kamu:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=suarawarga
+DB_USERNAME=root
+DB_PASSWORD=
+```
+*(Jangan lupa hidupkan MySQL via XAMPP atau Laragon).*
 
-## Laravel Sponsors
+### 3. Migrasi & Seed Database (PENTING)
+Berhubung kita sering merubah struktur tabel (terutama tabel `admins` dan `complaints`), **wajib** jalankan perintah ini supaya database lama kamu di-*reset* dan diisi dengan data dummy terbaru:
+```bash
+php artisan migrate:fresh --seed
+```
+⚠️ *Note: Perintah ini akan menghapus data lama di database lokal kamu dan menggantinya dengan struktur dan data yang baru.*
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 4. Link Storage
+Agar foto atau file unggahan bisa tampil di web, jalankan:
+```bash
+php artisan storage:link
+```
 
-### Premium Partners
+### 5. Jalankan Server
+```bash
+php artisan serve
+```
+Akses aplikasi melalui browser di `http://127.0.0.1:8000`.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🔐 Kredensial Admin Default
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Setelah kamu menjalankan `migrate:fresh --seed` di atas, kamu dapat login ke **Admin Panel** di `http://127.0.0.1:8000/admin/login` menggunakan akses berikut:
 
-## Code of Conduct
+- **Email:** `admin@suarawarga.id`
+- **Password:** `password123`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 📧 Testing Email (SMTP)
+Sistem ini menggunakan pengiriman email untuk notifikasi ke warga. Pastikan `.env` kamu memiliki settingan SMTP yang benar jika ingin mencoba fitur notifikasi email secara penuh (misalnya pakai Mailtrap, atau Gmail App Password).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=465
+MAIL_USERNAME=emailkamu@gmail.com
+MAIL_PASSWORD=passwordapp_kamu
+MAIL_ENCRYPTION=smtps
+MAIL_FROM_ADDRESS=admin@suarawarga.id
+MAIL_FROM_NAME="${APP_NAME}"
+```
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+*Dibuat untuk keperluan Proyek UAS.*
