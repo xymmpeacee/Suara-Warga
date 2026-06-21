@@ -1,150 +1,200 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin — SuaraWarga</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ __('Log in') }} - SuaraWarga</title>
+
+    {{-- Sesuaikan path ini jika setup Vite kamu berbeda --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="font-sans antialiased text-gray-900 bg-[#f8f9fa] overflow-hidden">
 
-<div class="h-screen w-full flex flex-col lg:flex-row">
-    {{-- Left Panel (Form) --}}
-    <div class="w-full lg:w-[45%] xl:w-[40%] flex flex-col p-8 lg:px-14 lg:py-8 relative bg-[#f8f9fa] h-screen justify-between">
-        
-        {{-- Logo --}}
-        <div class="shrink-0 mb-6">
-            <a href="{{ route('home') }}" class="flex items-center gap-2.5">
-                <div class="w-10 h-10 bg-[#0d6efd] rounded-full flex items-center justify-center shadow-md shrink-0">
-                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38a.75.75 0 0 1-1.021-.27 18.634 18.634 0 0 1-2.434-6.404m5.59-6.404c-.253-.962-.584-1.892-.985-2.783-.247-.55-.06-1.21.463-1.511l.657-.38a.75.75 0 0 1 1.021.27 18.634 18.634 0 0 1 2.434 6.404m-5.59 6.404a18.27 18.27 0 0 0 5.59 0"/></svg>
-                </div>
-                <div class="flex flex-col leading-none">
-                    <span class="text-xl font-bold text-gray-900 tracking-tight">SuaraWarga</span>
-                    <span class="text-[10px] font-semibold text-gray-500 tracking-widest uppercase mt-0.5">Layanan Aduan</span>
-                </div>
-            </a>
-        </div>
+<body class="font-sans antialiased text-gray-900">
 
-        {{-- Form Area --}}
-        <div class="w-full max-w-sm mx-auto my-auto">
-            <h1 class="text-2xl font-bold text-[#1f2937] mb-2">Selamat Datang Kembali</h1>
-            <p class="text-sm text-gray-500 mb-6 leading-relaxed">Silakan masuk ke akun administratif Anda untuk mengelola sistem.</p>
+    <div class="min-h-screen bg-gray-100 flex flex-col md:flex-row">
 
-            @if ($errors->any())
-            <div class="bg-red-50 border border-red-200 rounded-xl p-3 mb-5">
-                <p class="text-red-600 text-sm">{{ $errors->first() }}</p>
-            </div>
-            @endif
+        {{-- ============ KIRI: FORM LOGIN ============ --}}
+        <div class="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-12 lg:px-20 py-10">
+            <div class="w-full max-w-md mx-auto md:mx-0">
 
-            <form method="POST" action="{{ route('admin.login.submit') }}" class="space-y-4">
-                @csrf
-                <div>
-                    <label for="email" class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        </div>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}" required autofocus
-                            class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#0d6efd]/20 focus:border-[#0d6efd] transition-all shadow-sm placeholder:text-gray-400"
-                            placeholder="nama@email.com">
+                {{-- Logo --}}
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-[#0d6efd] rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 1 1 0-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38a.75.75 0 0 1-1.021-.27 18.634 18.634 0 0 1-2.434-6.404m5.59-6.404c-.253-.962-.584-1.892-.985-2.783-.247-.55-.06-1.21.463-1.511l.657-.38a.75.75 0 0 1 1.021.27 18.634 18.634 0 0 1 2.434 6.404m-5.59 6.404a18.27 18.27 0 0 0 5.59 0" />
+                        </svg>
+                    </div>
+                    <div class="leading-tight">
+                        <p class="text-lg font-extrabold tracking-tight text-gray-900">SuaraWarga</p>
+                        <p class="text-[11px] font-semibold tracking-widest text-gray-500">LAYANAN ADUAN</p>
                     </div>
                 </div>
-                
-                <div>
-                    <label for="password" class="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
-                    <div class="relative">
-                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+
+                {{-- Heading + form, jarak lebih lega dari logo --}}
+                <div class="mt-16 w-full">
+
+                    <h1 class="text-3xl font-extrabold text-gray-900">Selamat Datang Kembali</h1>
+                    <p class="mt-2 text-sm text-gray-500">
+                        Silakan masuk ke akun administratif Anda untuk mengelola sistem.
+                    </p>
+
+                    <x-auth-session-status class="mt-4" :status="session('status')" />
+
+                    <form method="POST" action="{{ route('admin.login') }}" class="mt-8 space-y-5">
+                        @csrf
+
+                        {{-- Email --}}
+                        <div>
+                            <label for="email" class="mb-1.5 block text-sm font-semibold text-gray-700">Email</label>
+                            <div class="relative">
+                                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0-.83.67-1.5 1.5-1.5h16.5c.83 0 1.5.67 1.5 1.5v10.5c0 .83-.67 1.5-1.5 1.5H3.75a1.5 1.5 0 0 1-1.5-1.5V6.75Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m3 7 9 6 9-6" />
+                                    </svg>
+                                </span>
+                                <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
+                                    autocomplete="username" placeholder="nama@email.com"
+                                    class="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-12 pr-4 text-base text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20" />
+                            </div>
+                            <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
-                        <input type="password" name="password" id="password" required
-                            class="w-full pl-11 pr-11 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#0d6efd]/20 focus:border-[#0d6efd] transition-all shadow-sm placeholder:text-gray-400 tracking-widest"
-                            placeholder="••••••••">
-                        <button type="button" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors">
-                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+
+                        {{-- Password --}}
+                        <div x-data="{ show: false }">
+                            <label for="password" class="mb-1.5 block text-sm font-semibold text-gray-700">Password</label>
+                            <div class="relative">
+                                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V7.5a4.5 4.5 0 1 0-9 0v3" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5h15v8.25a1.5 1.5 0 0 1-1.5 1.5h-12a1.5 1.5 0 0 1-1.5-1.5V10.5Z" />
+                                    </svg>
+                                </span>
+                                <input :type="show ? 'text' : 'password'" id="password" name="password" required
+                                    autocomplete="current-password" placeholder="••••••••"
+                                    class="w-full rounded-xl border border-gray-200 bg-white py-3.5 pl-12 pr-12 text-base text-gray-900 placeholder-gray-400 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600/20" />
+                                <button type="button" @click="show = !show"
+                                    class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 hover:text-gray-600">
+                                    <svg x-show="!show" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.75-7.5 9.75-7.5 9.75 7.5 9.75 7.5-3.75 7.5-9.75 7.5S2.25 12 2.25 12Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z" />
+                                    </svg>
+                                    <svg x-show="show" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="h-5 w-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c1.07 0 2.1-.16 3.07-.456M6.228 6.228A10.45 10.45 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.243 4.242L9.88 9.88" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+                        </div>
+
+                        {{-- Remember me + lupa password --}}
+                        <div class="flex items-center justify-between pt-1">
+                            <label for="remember_me" class="inline-flex items-center gap-2 text-sm text-gray-600">
+                                <input id="remember_me" type="checkbox" name="remember"
+                                    class="rounded border-gray-300 text-blue-700 shadow-sm focus:ring-blue-600">
+                                {{ __('Ingat saya') }}
+                            </label>
+
+                            @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}"
+                                class="text-sm font-medium text-blue-700 hover:text-blue-800 hover:underline">
+                                {{ __('Lupa password?') }}
+                            </a>
+                            @endif
+                        </div>
+
+                        <button type="submit"
+                            class="w-full rounded-xl bg-blue-700 py-3.5 text-base font-semibold text-white shadow-sm shadow-blue-700/30 transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-600/40 focus:ring-offset-2">
+                            Masuk sebagai Admin
                         </button>
-                    </div>
+                    </form>
                 </div>
 
-                <button type="submit" class="w-full mt-4 bg-[#0d6efd] hover:bg-[#0b5ed7] text-white font-bold py-3 rounded-xl text-sm shadow-[0_4px_14px_0_rgba(13,110,253,0.39)] transition-all">
-                    Masuk sebagai Admin
-                </button>
-            </form>
+                {{-- Footer --}}
+                <div class="mt-6 w-full">
+                    <hr class="border-gray-200">
+                    <p class="pt-6 text-center text-xs text-gray-400">
+                        &copy; {{ now()->year }} SuaraWarga
+                        <span class="mx-2 text-gray-300">&middot;</span>
+                        <a href="{{ route('home') }}" class="font-medium text-gray-400 hover:text-primary">
+                            Kembali ke Beranda &rarr;
+                        </a>
+                    </p>
+                </div>
+            </div>
         </div>
 
-        {{-- Footer --}}
-        <div class="shrink-0 mt-6 pt-4 border-t border-gray-200 text-center sm:text-left">
-            <p class="text-[11px] text-gray-400">&copy; 2026 SuaraWarga. Untuk warga, oleh warga.</p>
-        </div>
-    </div>
+        {{-- ============ KANAN: PANEL BRANDING ============ --}}
+        <div class="hidden md:flex md:w-1/2 p-4 lg:p-6">
+            <div class="relative flex w-full flex-col justify-center overflow-hidden rounded-3xl bg-blue-700 px-12 py-16 text-white lg:px-16">
 
-    {{-- Right Panel (Illustration) --}}
-    <div class="hidden lg:flex lg:w-[55%] xl:w-[60%] bg-[#0d6efd] flex-col p-8 relative overflow-hidden justify-center items-center h-screen">
-        {{-- Background pattern --}}
-        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]"></div>
-        
-        <div class="relative z-10 w-full max-w-xl flex flex-col gap-6 xl:gap-8">
-            {{-- Text Area --}}
-            <div>
-                <h2 class="text-3xl xl:text-4xl font-extrabold text-white leading-tight mb-3">
+                <h2 class="text-3xl font-extrabold leading-tight lg:text-4xl">
                     Kelola pengaduan warga dengan lebih efisien dan transparan.
                 </h2>
-                <p class="text-blue-100 text-sm xl:text-base leading-relaxed">
+                <p class="mt-5 max-w-md text-blue-100">
                     Gunakan platform administrasi terpusat untuk memantau, memverifikasi, dan menindaklanjuti setiap aspirasi warga secara real-time.
                 </p>
-            </div>
 
-            {{-- Realistic Mockup (Compact) --}}
-            <div class="border border-white/20 bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl p-5">
-                {{-- Header --}}
-                <div class="flex items-center gap-3 mb-4 pb-3 border-b border-white/10">
-                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white shrink-0">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z"/></svg>
-                    </div>
-                    <div>
-                        <div class="text-white font-bold text-sm leading-tight">Dashboard Overview</div>
-                        <div class="text-blue-200 text-[9px] uppercase tracking-wider font-semibold mt-0.5">Real-time statistics</div>
-                    </div>
-                </div>
-                
-                {{-- Stats Cards --}}
-                <div class="grid grid-cols-3 gap-3 mb-4">
-                    <div class="bg-white/10 rounded-xl p-3 border border-white/5 relative overflow-hidden">
-                        <p class="text-blue-100 text-[9px] uppercase font-bold tracking-widest mb-1 opacity-80">Total Aduan</p>
-                        <p class="text-white text-xl xl:text-2xl font-extrabold">2.410</p>
-                    </div>
-                    <div class="bg-white/10 rounded-xl p-3 border border-white/5 relative overflow-hidden">
-                        <p class="text-yellow-300 text-[9px] uppercase font-bold tracking-widest mb-1 opacity-90">Diproses</p>
-                        <p class="text-white text-xl xl:text-2xl font-extrabold">124</p>
-                    </div>
-                    <div class="bg-white/10 rounded-xl p-3 border border-white/5 relative overflow-hidden">
-                        <p class="text-green-300 text-[9px] uppercase font-bold tracking-widest mb-1 opacity-90">Selesai</p>
-                        <p class="text-white text-xl xl:text-2xl font-extrabold">2.286</p>
-                    </div>
-                </div>
-
-                {{-- List --}}
-                <div class="bg-white/10 rounded-xl p-3 space-y-2 border border-white/5">
-                    <div class="text-white font-semibold text-[11px] xl:text-xs mb-2">Aduan Masuk Terkini</div>
-                    
-                    <div class="w-full bg-white/5 rounded flex items-center p-2.5 gap-3">
-                        <div class="w-1.5 h-1.5 bg-yellow-400 rounded-full shrink-0"></div>
-                        <div class="flex-1">
-                            <div class="text-white text-[11px] xl:text-xs font-semibold mb-0.5">Jalan berlubang parah di Jl. Sudirman</div>
-                            <div class="text-blue-200 text-[9px] xl:text-[10px] opacity-70">in Infrastruktur • 10 menit lalu</div>
+                {{-- Mockup dashboard (dekoratif) --}}
+                <div class="mt-12 rounded-2xl bg-white/10 p-5">
+                    <div class="flex gap-4">
+                        {{-- sidebar --}}
+                        <div class="flex flex-col gap-3">
+                            <div class="h-9 w-9 rounded-lg bg-white/25"></div>
+                            <div class="h-9 w-9 rounded-lg bg-white/15"></div>
+                            <div class="h-9 w-9 rounded-lg bg-white/15"></div>
+                            <div class="h-9 w-9 rounded-lg bg-white/15"></div>
                         </div>
-                    </div>
-                    <div class="w-full bg-white/5 rounded flex items-center p-2.5 gap-3">
-                        <div class="w-1.5 h-1.5 bg-green-400 rounded-full shrink-0"></div>
-                        <div class="flex-1">
-                            <div class="text-white text-[11px] xl:text-xs font-semibold mb-0.5">Lampu penerangan mati total</div>
-                            <div class="text-blue-200 text-[9px] xl:text-[10px] opacity-70">in Fasilitas Umum • 45 menit lalu</div>
+
+                        <div class="flex-1 space-y-4">
+                            {{-- stat cards --}}
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="rounded-xl bg-white/15 p-3">
+                                    <div class="h-6 w-6 rounded-full bg-white/40"></div>
+                                    <div class="mt-3 h-2 w-full rounded-full bg-white/30"></div>
+                                </div>
+                                <div class="rounded-xl bg-white/15 p-3">
+                                    <div class="h-6 w-6 rounded-full bg-gray-300/70"></div>
+                                    <div class="mt-3 h-2 w-full rounded-full bg-white/30"></div>
+                                </div>
+                                <div class="rounded-xl bg-white/15 p-3">
+                                    <div class="h-6 w-6 rounded-full bg-teal-300/70"></div>
+                                    <div class="mt-3 h-2 w-full rounded-full bg-white/30"></div>
+                                </div>
+                            </div>
+
+                            {{-- list --}}
+                            <div class="space-y-3 rounded-xl bg-white/10 p-4">
+                                <div class="flex items-center justify-between">
+                                    <div class="h-2.5 w-2/5 rounded-full bg-white/40"></div>
+                                    <div class="h-2.5 w-8 rounded-full bg-white/25"></div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="h-5 w-5 shrink-0 rounded-full bg-white/30"></div>
+                                    <div class="h-2.5 w-full rounded-full bg-white/20"></div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="h-5 w-5 shrink-0 rounded-full bg-white/30"></div>
+                                    <div class="h-2.5 w-full rounded-full bg-white/20"></div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="h-5 w-5 shrink-0 rounded-full bg-white/30"></div>
+                                    <div class="h-2.5 w-full rounded-full bg-white/20"></div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="h-5 w-5 shrink-0 rounded-full bg-white/30"></div>
+                                    <div class="h-2.5 w-full rounded-full bg-white/20"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
 </body>
+
 </html>
