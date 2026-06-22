@@ -1,37 +1,43 @@
-/* ===== Google Fonts: Inter ===== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800&display=swap');
+/* ===== Google Fonts: Poppins ===== */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 /* ===== Smooth scroll ===== */
 html {
     scroll-behavior: smooth;
 }
 
-/* ===== Scrollbar styling ===== */
+/* ===== Scrollbar styling (global - hidden) ===== */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 0px;
+    background: transparent;
 }
-::-webkit-scrollbar-track {
-    background: #F3F4F6;
+
+/* ===== Scrollbar modal (tipis & subtle) ===== */
+#detail-modal-content::-webkit-scrollbar {
+    width: 4px;
 }
-::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
-    border-radius: 999px;
+#detail-modal-content::-webkit-scrollbar-track {
+    background: transparent;
 }
-::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
+#detail-modal-content::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 99px;
+}
+#detail-modal-content::-webkit-scrollbar-thumb:hover {
+    background: #d1d5db;
 }
 
 /* ===== Intersection Observer animation triggers ===== */
 .reveal {
     opacity: 0;
     transform: translateY(24px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.visible {
     opacity: 1;
@@ -40,8 +46,9 @@ html {
 .reveal-left {
     opacity: 0;
     transform: translateX(-32px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal-left.visible {
     opacity: 1;
@@ -50,8 +57,9 @@ html {
 .reveal-right {
     opacity: 0;
     transform: translateX(32px);
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal-right.visible {
     opacity: 1;
@@ -62,13 +70,30 @@ html {
 .reveal-stagger > * {
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.05s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.15s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.25s; opacity: 1; transform: translateY(0); }
-.reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.35s; opacity: 1; transform: translateY(0); }
+.reveal-stagger.visible > *:nth-child(1) {
+    transition-delay: 0.05s;
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-stagger.visible > *:nth-child(2) {
+    transition-delay: 0.15s;
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-stagger.visible > *:nth-child(3) {
+    transition-delay: 0.25s;
+    opacity: 1;
+    transform: translateY(0);
+}
+.reveal-stagger.visible > *:nth-child(4) {
+    transition-delay: 0.35s;
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* ===== Navbar active link pill ===== */
 .nav-link-active {
@@ -78,14 +103,16 @@ html {
     @apply text-gray-600 hover:text-primary px-3 py-1.5 text-sm font-medium transition-colors duration-200 relative;
 }
 .nav-link::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 50%;
     width: 0;
     height: 2px;
-    background: #1B3FE4;
-    transition: width 0.3s ease, left 0.3s ease;
+    background: #1b3fe4;
+    transition:
+        width 0.3s ease,
+        left 0.3s ease;
 }
 .nav-link:hover::after {
     width: 60%;
@@ -95,15 +122,28 @@ html {
 /* ===== Hero gradient overlay ===== */
 .hero-pattern {
     background-image:
-        radial-gradient(ellipse at 20% 80%, rgba(255, 214, 0, 0.08) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(27, 63, 228, 0.2) 0%, transparent 70%);
+        radial-gradient(
+            ellipse at 20% 80%,
+            rgba(255, 214, 0, 0.08) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            ellipse at 80% 20%,
+            rgba(255, 255, 255, 0.06) 0%,
+            transparent 50%
+        ),
+        radial-gradient(
+            ellipse at 50% 50%,
+            rgba(27, 63, 228, 0.2) 0%,
+            transparent 70%
+        );
 }
 
 /* ===== Card hover lift ===== */
 .card-lift {
-    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-                box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+        transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .card-lift:hover {
     transform: translateY(-4px);
@@ -112,23 +152,29 @@ html {
 
 /* ===== Feature card hover border ===== */
 .feature-card {
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
 }
 .feature-card:hover {
-    border-color: #1B3FE4;
-    box-shadow: 0 0 0 1px #1B3FE4;
+    border-color: #1b3fe4;
+    box-shadow: 0 0 0 1px #1b3fe4;
 }
 
 /* ===== CTA button hover ===== */
 .btn-primary-cta {
-    transition: filter 0.2s ease, transform 0.2s ease;
+    transition:
+        filter 0.2s ease,
+        transform 0.2s ease;
 }
 .btn-primary-cta:hover {
     filter: brightness(1.08);
     transform: scale(1.02);
 }
 .btn-secondary-cta {
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 .btn-secondary-cta:hover {
     background-color: rgba(255, 255, 255, 0.15);
@@ -151,7 +197,8 @@ html {
     animation: pulseRing 2s ease-in-out infinite;
 }
 @keyframes pulseRing {
-    0%, 100% {
+    0%,
+    100% {
         box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
     }
     50% {
