@@ -100,7 +100,7 @@ class ComplaintController extends Controller
                 ? $complaint->photo_path
                 : asset('storage/' . $complaint->photo_path),
             'priority' => $complaint->priority,
-            'reporter_name' => $complaint->public_reporter_name,
+            'reporter_name' => auth('admin')->check() ? $complaint->actual_reporter_name : $complaint->public_reporter_name,
             'status' => $complaint->status,
             'status_label' => $complaint->status_label,
             'status_color' => $complaint->status_color,
