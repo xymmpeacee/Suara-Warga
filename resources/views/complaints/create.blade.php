@@ -32,7 +32,8 @@
 @endif
 
 {{-- Form Card --}}
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6"    <form action="{{ route('buat-aduan.store') }}" method="POST" enctype="multipart/form-data" id="complaint-form">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6">
+    <form action="{{ route('buat-aduan.store') }}" method="POST" enctype="multipart/form-data" id="complaint-form">
         @csrf
 
         <div class="space-y-8">
