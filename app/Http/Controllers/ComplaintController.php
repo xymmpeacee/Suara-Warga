@@ -101,6 +101,8 @@ class ComplaintController extends Controller
                 : asset('storage/' . $complaint->photo_path),
             'priority' => $complaint->priority,
             'reporter_name' => auth('admin')->check() ? $complaint->actual_reporter_name : $complaint->public_reporter_name,
+            'whatsapp' => auth('admin')->check() ? $complaint->whatsapp : null,
+            'reporter_email' => auth('admin')->check() ? $complaint->reporter_email : null,
             'status' => $complaint->status,
             'status_label' => $complaint->status_label,
             'status_color' => $complaint->status_color,
