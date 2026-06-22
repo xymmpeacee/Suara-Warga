@@ -17,8 +17,8 @@
     <div class="min-h-screen bg-gray-100 flex flex-col md:flex-row">
 
         {{-- ============ KIRI: FORM LOGIN ============ --}}
-        <div class="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-12 lg:px-20 py-10">
-            <div class="w-full max-w-md mx-auto md:mx-0">
+        <div class="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-12 lg:px-16 py-16">
+            <div class="w-full max-w-lg mx-auto md:mx-0">
 
                 {{-- Logo --}}
                 <div class="flex items-center gap-3">
@@ -90,22 +90,6 @@
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
 
-                        {{-- Remember me + lupa password --}}
-                        <div class="flex items-center justify-between pt-1">
-                            <label for="remember_me" class="inline-flex items-center gap-2 text-sm text-gray-600">
-                                <input id="remember_me" type="checkbox" name="remember"
-                                    class="rounded border-gray-300 text-blue-700 shadow-sm focus:ring-blue-600">
-                                {{ __('Ingat saya') }}
-                            </label>
-
-                            @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}"
-                                class="text-sm font-medium text-blue-700 hover:text-blue-800 hover:underline">
-                                {{ __('Lupa password?') }}
-                            </a>
-                            @endif
-                        </div>
-
                         <button type="submit"
                             class="w-full rounded-xl bg-blue-700 py-3.5 text-base font-semibold text-white shadow-sm shadow-blue-700/30 transition hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-600/40 focus:ring-offset-2">
                             Masuk sebagai Admin
@@ -114,7 +98,7 @@
                 </div>
 
                 {{-- Footer --}}
-                <div class="mt-6 w-full">
+                <div class="mt-12 w-full">
                     <hr class="border-gray-200">
                     <p class="pt-6 text-center text-xs text-gray-400">
                         &copy; {{ now()->year }} SuaraWarga
