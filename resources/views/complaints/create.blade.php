@@ -78,24 +78,28 @@
                     placeholder="Jelaskan masalah secara detail (min. 20 karakter)...">{{ old('description') }}</textarea>
             </div>
 
-            {{-- 4. Lokasi (Map Picker) --}}
-            <div>
-                <label class="block text-sm font-bold text-gray-700 mb-2">Lokasi <span class="text-red-500">*</span></label>
-                <div id="map" class="w-full h-72 sm:h-96 rounded-xl border border-gray-300 shadow-sm z-0"></div>
-                <div class="flex flex-wrap items-center gap-3 mt-3">
-                    <button type="button" id="btn-locate" class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-primary-600 transition-colors">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-                        Lokasi saya
-                    </button>
-                    <span id="location-status" class="text-xs text-gray-400"></span>
-                </div>
-                <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude') }}">
-                <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude') }}">
-                <input type="text" name="address" id="address" value="{{ old('address') }}" readonly
-                    class="w-full mt-3 rounded-xl border-gray-200 bg-gray-50 shadow-sm text-sm py-3 px-4 text-gray-500"
-                    placeholder="Alamat akan terisi otomatis setelah memilih lokasi di peta">
-            </div>
+            {{-- 4. Lokasi (Map Picker + Address Search) --}}
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Lokasi <span class="text-red-500">*</span></label>
+                    <div id="map" class="w-full h-72 sm:h-96 rounded-xl border border-gray-300 shadow-sm z-0"></div>
+                    <div class="flex flex-wrap items-center gap-3 mt-3">
+                        <button type="button" id="btn-locate" class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-primary-600 transition-colors">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                            Lokasi saya
+                        </button>
+                        <span id="location-status" class="text-xs text-gray-400"></span>
+                    </div>
+                    <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude') }}">
+                    <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude') }}">
 
+                    <div class="relative mt-3">
+                        <input type="text" name="address" id="address" value="{{ old('address') }}" autocomplete="off"
+                            class="w-full rounded-xl border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-3 px-4"
+                            placeholder="Ketik alamat, contoh: Jl. Melati No. 10, Bandung">
+                        <div id="address-suggestions" class="hidden absolute z-50 mt-1.5 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto"></div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1.5">Ketik alamat untuk mencari otomatis, atau klik/geser pin di peta untuk memilih lokasi secara manual.</p>
+                </div>
             {{-- 5. Foto Bukti (dengan Cropper) --}}
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">Foto Bukti <span class="text-red-500">*</span></label>
@@ -201,54 +205,125 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <script>
-    // ===== Map Picker (Leaflet + OpenStreetMap) =====
-    const defaultLat = {{ old('latitude', -6.9175) }};
-    const defaultLng = {{ old('longitude', 107.6191) }};
+        // ===== Map Picker (Leaflet + OpenStreetMap) =====
+        const defaultLat = {{ old('latitude', -6.9175) }};
+        const defaultLng = {{ old('longitude', 107.6191) }};
 
-    const map = L.map('map').setView([defaultLat, defaultLng], 15);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors', maxZoom: 19
-    }).addTo(map);
+        const map = L.map('map').setView([defaultLat, defaultLng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors', maxZoom: 19
+        }).addTo(map);
 
-    let marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+        let marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
 
-    function updateLocation(lat, lng) {
-        document.getElementById('latitude').value = lat.toFixed(7);
-        document.getElementById('longitude').value = lng.toFixed(7);
-        marker.setLatLng([lat, lng]);
-        map.setView([lat, lng], map.getZoom());
+        const addressInput   = document.getElementById('address');
+        const suggestionsBox = document.getElementById('address-suggestions');
+        let isProgrammaticUpdate = false;
+        let searchTimeout = null;
 
-        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
-            .then(r => r.json())
-            .then(data => {
-                if (data.display_name) document.getElementById('address').value = data.display_name;
-            }).catch(() => {});
-    }
+        // doReverseGeocode = false saat dipanggil dari search box (alamat sudah ada teksnya)
+        function updateLocation(lat, lng, doReverseGeocode = true) {
+            document.getElementById('latitude').value = lat.toFixed(7);
+            document.getElementById('longitude').value = lng.toFixed(7);
+            marker.setLatLng([lat, lng]);
+            map.setView([lat, lng], map.getZoom());
 
-    map.on('click', e => updateLocation(e.latlng.lat, e.latlng.lng));
-    marker.on('dragend', e => {
-        const pos = e.target.getLatLng();
-        updateLocation(pos.lat, pos.lng);
-    });
+            if (doReverseGeocode) {
+                fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.display_name) {
+                            isProgrammaticUpdate = true;
+                            addressInput.value = data.display_name;
+                            isProgrammaticUpdate = false;
+                        }
+                    }).catch(() => {});
+            }
+        }
 
-    document.getElementById('btn-locate').addEventListener('click', () => {
-        const status = document.getElementById('location-status');
-        if (!navigator.geolocation) { status.textContent = 'Browser tidak mendukung geolocation.'; return; }
-        status.textContent = 'Mencari lokasi...';
-        navigator.geolocation.getCurrentPosition(
-            pos => {
-                updateLocation(pos.coords.latitude, pos.coords.longitude);
-                map.setZoom(17);
-                status.textContent = 'Lokasi ditemukan!';
-                setTimeout(() => status.textContent = '', 3000);
-            },
-            () => { status.textContent = 'Gagal mendapatkan lokasi.'; }
-        );
-    });
+        // Klik peta → isi alamat otomatis
+        map.on('click', e => updateLocation(e.latlng.lat, e.latlng.lng));
+        // Drag marker → isi alamat otomatis
+        marker.on('dragend', e => {
+            const pos = e.target.getLatLng();
+            updateLocation(pos.lat, pos.lng);
+        });
 
-    @if(old('latitude') && old('longitude'))
-        updateLocation({{ old('latitude') }}, {{ old('longitude') }});
-    @endif
+        // Tombol Lokasi Saya (geolocation)
+        document.getElementById('btn-locate').addEventListener('click', () => {
+            const status = document.getElementById('location-status');
+            if (!navigator.geolocation) {
+                status.textContent = 'Browser tidak mendukung geolocation.';
+                return;
+            }
+            status.textContent = 'Mencari lokasi...';
+            navigator.geolocation.getCurrentPosition(
+                pos => {
+                    updateLocation(pos.coords.latitude, pos.coords.longitude);
+                    map.setZoom(17);
+                    status.textContent = 'Lokasi ditemukan!';
+                    setTimeout(() => status.textContent = '', 3000);
+                },
+                () => { status.textContent = 'Gagal mendapatkan lokasi.'; }
+            );
+        });
+
+        // ===== Address Search (Manual Input → Map ikut) =====
+        function hideSuggestions() {
+            suggestionsBox.classList.add('hidden');
+            suggestionsBox.innerHTML = '';
+        }
+
+        function showSuggestions(results) {
+            if (!results.length) { hideSuggestions(); return; }
+
+            suggestionsBox.innerHTML = results.map((r, i) => `
+                <button type="button" data-index="${i}" class="suggestion-item w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-100 last:border-0 flex items-start gap-2">
+                    <svg class="w-4 h-4 text-gray-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                    <span>${r.display_name}</span>
+                </button>
+            `).join('');
+            suggestionsBox.classList.remove('hidden');
+
+            suggestionsBox.querySelectorAll('.suggestion-item').forEach((btn, i) => {
+                btn.addEventListener('click', () => {
+                    const r = results[i];
+                    isProgrammaticUpdate = true;
+                    addressInput.value = r.display_name;
+                    updateLocation(parseFloat(r.lat), parseFloat(r.lon), false);
+                    map.setZoom(17);
+                    hideSuggestions();
+                    isProgrammaticUpdate = false;
+                });
+            });
+        }
+
+        addressInput.addEventListener('input', () => {
+            if (isProgrammaticUpdate) return;
+            clearTimeout(searchTimeout);
+
+            const query = addressInput.value.trim();
+            if (query.length < 3) { hideSuggestions(); return; }
+
+            searchTimeout = setTimeout(() => {
+                fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&countrycodes=id&addressdetails=1`)
+                    .then(r => r.json())
+                    .then(results => showSuggestions(results))
+                    .catch(() => hideSuggestions());
+            }, 500);
+        });
+
+        // Sembunyikan dropdown saat klik di luar
+        document.addEventListener('click', (e) => {
+            if (!addressInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+                hideSuggestions();
+            }
+        });
+
+        // Set initial location if old values exist
+        @if(old('latitude') && old('longitude'))
+            updateLocation({{ old('latitude') }}, {{ old('longitude') }}, false);
+        @endif
 
     // ===== Photo Crop Flow =====
     const photoRawInput   = document.getElementById('photo_raw');
