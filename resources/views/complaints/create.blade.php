@@ -15,7 +15,7 @@
 
 <main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
 {{-- Header (di luar card) --}}
-<div class="mb-8">
+<div class="mb-4">
     <span class="inline-block text-xs font-bold tracking-[0.2em] uppercase text-primary mb-2">Formulir Aduan</span>
     <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Apa yang ingin kamu laporkan?</h1>
     <p class="text-gray-500 mt-1">Isi detail di bawah. Semakin lengkap, semakin cepat ditangani.</p>
@@ -32,11 +32,11 @@
 @endif
 
 {{-- Form Card --}}
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-10">
-    <form action="{{ route('buat-aduan.store') }}" method="POST" enctype="multipart/form-data" class="space-y-8" id="complaint-form">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 sm:p-6"    <form action="{{ route('buat-aduan.store') }}" method="POST" enctype="multipart/form-data" id="complaint-form">
         @csrf
 
-        {{-- 1. Kategori (Chip Selector) --}}
+        <div class="space-y-8">
+            {{-- 1. Kategori (Chip Selector) --}}
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-3">Kategori Aduan <span class="text-red-500">*</span></label>
                 <div class="flex flex-wrap gap-2" id="category-chips">
@@ -79,27 +79,28 @@
             </div>
 
             {{-- 4. Lokasi (Map Picker + Address Search) --}}
-                <div>
-                    <label class="block text-sm font-bold text-gray-700 mb-2">Lokasi <span class="text-red-500">*</span></label>
-                    <div id="map" class="w-full h-72 sm:h-96 rounded-xl border border-gray-300 shadow-sm z-0"></div>
-                    <div class="flex flex-wrap items-center gap-3 mt-3">
-                        <button type="button" id="btn-locate" class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-primary-600 transition-colors">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
-                            Lokasi saya
-                        </button>
-                        <span id="location-status" class="text-xs text-gray-400"></span>
-                    </div>
-                    <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude') }}">
-                    <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude') }}">
-
-                    <div class="relative mt-3">
-                        <input type="text" name="address" id="address" value="{{ old('address') }}" autocomplete="off"
-                            class="w-full rounded-xl border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-3 px-4"
-                            placeholder="Ketik alamat, contoh: Jl. Melati No. 10, Bandung">
-                        <div id="address-suggestions" class="hidden absolute z-50 mt-1.5 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto"></div>
-                    </div>
-                    <p class="text-xs text-gray-400 mt-1.5">Ketik alamat untuk mencari otomatis, atau klik/geser pin di peta untuk memilih lokasi secara manual.</p>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Lokasi <span class="text-red-500">*</span></label>
+                <div id="map" class="w-full h-72 sm:h-96 rounded-xl border border-gray-300 shadow-sm z-0"></div>
+                <div class="flex flex-wrap items-center gap-3 mt-3">
+                    <button type="button" id="btn-locate" class="inline-flex items-center gap-1.5 px-4 py-2 bg-primary text-white text-sm font-medium rounded-full hover:bg-primary-600 transition-colors">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+                        Lokasi saya
+                    </button>
+                    <span id="location-status" class="text-xs text-gray-400"></span>
                 </div>
+                <input type="hidden" name="latitude" id="latitude" value="{{ old('latitude') }}">
+                <input type="hidden" name="longitude" id="longitude" value="{{ old('longitude') }}">
+
+                <div class="relative mt-3">
+                    <input type="text" name="address" id="address" value="{{ old('address') }}" autocomplete="off"
+                        class="w-full rounded-xl border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-sm py-3 px-4"
+                        placeholder="Ketik alamat, contoh: Jl. Melati No. 10, Bandung">
+                    <div id="address-suggestions" class="hidden absolute z-50 mt-1.5 w-full bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto"></div>
+                </div>
+                <p class="text-xs text-gray-400 mt-1.5">Ketik alamat untuk mencari otomatis, atau klik/geser pin di peta untuk memilih lokasi secara manual.</p>
+            </div>
+
             {{-- 5. Foto Bukti (dengan Cropper) --}}
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-2">Foto Bukti <span class="text-red-500">*</span></label>
@@ -170,7 +171,8 @@
             <button type="submit" class="w-full btn-primary-cta bg-primary text-white font-bold py-3.5 rounded-xl text-sm shadow-lg shadow-primary/20 hover:bg-primary-600 transition-colors">
                 Kirim Aduan
             </button>
-        </form>
+        </div>
+    </form>
     </div>
 </main>
 
