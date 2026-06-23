@@ -128,7 +128,7 @@
     </style>
 </head>
 
-<body class="font-sans antialiased text-gray-900 bg-[#f4f5f7]">
+<body class="font-sans antialiased text-gray-900" style="background-color: #F0F2F5;">
 
     {{-- Admin Navbar --}}
     <nav class="sticky top-0 z-50 bg-white border-b border-gray-200">
@@ -305,7 +305,7 @@
         </form>
 
         {{-- Table --}}
-        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead class="bg-[#f8f9fa] border-b border-gray-200">

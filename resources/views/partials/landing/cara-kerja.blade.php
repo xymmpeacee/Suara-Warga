@@ -1,5 +1,5 @@
 <!-- Cara Kerja Section -->
-<section id="cara-kerja" class="py-20 sm:py-28 bg-white">
+<section id="cara-kerja" class="py-20 sm:py-28" style="background-color: #F0F2F5;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-14 reveal">

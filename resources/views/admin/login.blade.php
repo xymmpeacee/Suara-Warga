@@ -18,8 +18,7 @@
 
 <body class="font-sans antialiased text-gray-900">
 
-    <div class="min-h-screen bg-gray-100 flex flex-col md:flex-row">
-
+    <div class="min-h-screen flex flex-col md:flex-row" style="background-color: #F0F2F5;">
         {{-- ============ KIRI: FORM LOGIN ============ --}}
         <div class="w-full md:w-1/2 flex items-center justify-center px-6 sm:px-12 lg:px-16 py-16">
             <div class="w-full max-w-lg mx-auto md:mx-0">

@@ -1,5 +1,5 @@
 <!-- Mengapa SuaraWarga Section -->
-<section id="mengapa" class="py-20 sm:py-28 bg-white">
+<section id="mengapa" class="py-20 sm:py-28" style="background-color: #F0F2F5;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <!-- Left Column -->
