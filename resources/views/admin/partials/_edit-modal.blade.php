@@ -46,7 +46,7 @@
                         {{-- Status Selection --}}
                         <div class="mb-6">
                             <label class="block text-[13px] font-bold text-gray-900 mb-3">Ubah Status</label>
-                            <div class="flex gap-3" id="edit-status-buttons">
+                            <div class="flex flex-col sm:flex-row gap-3" id="edit-status-buttons">
                                 <label class="flex-1 cursor-pointer">
                                     <input type="radio" name="status" value="pending" class="hidden peer" onchange="updateStatusUI()">
                                     <div class="text-center px-4 py-2.5 rounded-full text-sm font-semibold border transition-all duration-200 peer-checked:bg-[#0d6efd] peer-checked:border-[#0d6efd] peer-checked:text-white border-gray-200 text-gray-500 hover:border-gray-300">Pending</div>

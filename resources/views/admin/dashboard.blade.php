@@ -372,8 +372,8 @@
 
             {{-- Pagination --}}
             @if($complaints->hasPages())
-            <div class="bg-[#f8f9fa] border-t border-gray-200 px-6 py-4 flex items-center justify-between gap-4">
-                <span class="text-xs text-gray-500 font-medium shrink-0">
+            <div class="bg-[#f8f9fa] border-t border-gray-200 px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span class="text-xs text-gray-500 font-medium shrink-0 text-center sm:text-left">
                     Menampilkan <strong>{{ $complaints->firstItem() }}–{{ $complaints->lastItem() }}</strong> dari <strong>{{ $complaints->total() }}</strong> entri
                 </span>
                 <div class="flex items-center gap-1">

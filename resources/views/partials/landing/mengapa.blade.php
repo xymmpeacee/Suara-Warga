@@ -10,7 +10,7 @@
             </div>
 
             <!-- Right Column — 2x2 Grid -->
-            <div class="grid grid-cols-2 gap-4 reveal-right">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 reveal-right">
                 <div class="card-lift bg-white border border-gray-200 rounded-2xl shadow-xl p-6 group">
                     <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors">
                         <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
