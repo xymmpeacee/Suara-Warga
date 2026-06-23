@@ -54,5 +54,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
         Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::put('dashboard/{complaint}', [AdminDashboardController::class, 'update'])->name('dashboard.update');
+        Route::delete('dashboard/{complaint}', [AdminDashboardController::class, 'destroy'])->name('dashboard.destroy');
     });
 });

@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateComplaintRequest;
 use App\Mail\AduanStatusUpdatedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -81,7 +82,7 @@ class DashboardController extends Controller
         // Update status complaint
         $complaint->update(['status' => $validated['status']]);
 
-        // Kirim email notifikasi ke pelapor + semua pendukung (queued)
+        // Kirim email notifikasi ke pelapor + semua pendukung
         $recipients = collect([$complaint->reporter_email]);
 
         // Tambahkan semua email upvoter
@@ -89,10 +90,34 @@ class DashboardController extends Controller
         $recipients = $recipients->merge($upvoterEmails)->unique();
 
         foreach ($recipients as $email) {
-            Mail::to($email)->queue(new AduanStatusUpdatedMail($complaint, $validated['message'] ?? null));
+            Mail::to($email)->send(new AduanStatusUpdatedMail($complaint, $validated['message'] ?? null));
         }
 
         return redirect()->route('admin.dashboard')
             ->with('success', "Status aduan {$complaint->ticket_code} berhasil diperbarui menjadi " . ucfirst($validated['status']) . '.');
+    }
+
+    /** Hapus aduan beserta foto dan tanggapannya */
+    public function destroy(Complaint $complaint)
+    {
+        // Hapus foto utama dari storage
+        if ($complaint->photo_path && !str_starts_with($complaint->photo_path, 'http')) {
+            Storage::disk('public')->delete($complaint->photo_path);
+        }
+
+        // Hapus foto-foto di setiap response (kalau ada)
+        foreach ($complaint->responses as $response) {
+            if ($response->photo_path && !str_starts_with($response->photo_path, 'http')) {
+                Storage::disk('public')->delete($response->photo_path);
+            }
+        }
+
+        $ticketCode = $complaint->ticket_code;
+
+        // responses & upvotes ikut terhapus otomatis (cascadeOnDelete di migration)
+        $complaint->delete();
+
+        return redirect()->route('admin.dashboard')
+            ->with('success', "Aduan {$ticketCode} berhasil dihapus.");
     }
 }
