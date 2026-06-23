@@ -41,18 +41,18 @@
         </div>
 
         <!-- Stats -->
-        <div class="grid grid-cols-3 gap-3 max-w-md" style="animation: fadeInUp 0.6s ease-out 0.55s both;">
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-xl px-4 py-4 text-center">
-                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="{{ $stats['total'] }}">0</div>
-                <div class="text-xs text-white/60 mt-1">Total Aduan</div>
+        <div class="grid grid-cols-3 gap-2 sm:gap-3 max-w-md" style="animation: fadeInUp 0.6s ease-out 0.55s both;">
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-xl px-2 sm:px-4 py-3 sm:py-4 text-center">
+                <div class="text-xl sm:text-3xl font-bold text-white" data-count="{{ $stats['total'] }}">0</div>
+                <div class="text-[10px] sm:text-xs text-white/60 mt-1">Total Aduan</div>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-xl px-4 py-4 text-center">
-                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="{{ $stats['diproses'] }}">0</div>
-                <div class="text-xs text-white/60 mt-1">Diproses</div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-xl px-2 sm:px-4 py-3 sm:py-4 text-center">
+                <div class="text-xl sm:text-3xl font-bold text-white" data-count="{{ $stats['diproses'] }}">0</div>
+                <div class="text-[10px] sm:text-xs text-white/60 mt-1">Diproses</div>
             </div>
-            <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-xl px-4 py-4 text-center">
-                <div class="text-2xl sm:text-3xl font-bold text-white" data-count="{{ $stats['selesai'] }}">0</div>
-                <div class="text-xs text-white/60 mt-1">Selesai</div>
+            <div class="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl shadow-xl px-2 sm:px-4 py-3 sm:py-4 text-center">
+                <div class="text-xl sm:text-3xl font-bold text-white" data-count="{{ $stats['selesai'] }}">0</div>
+                <div class="text-[10px] sm:text-xs text-white/60 mt-1">Selesai</div>
             </div>
         </div>
     </div>
