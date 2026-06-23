@@ -30,9 +30,9 @@ class DashboardController extends Controller
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('ticket_code', 'like', "%{$search}%")
-                  ->orWhere('title', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%")
-                  ->orWhere('reporter_name', 'like', "%{$search}%");
+                    ->orWhere('title', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%")
+                    ->orWhere('reporter_name', 'like', "%{$search}%");
             });
         }
 
@@ -54,7 +54,7 @@ class DashboardController extends Controller
             $query->latest();
         }
 
-        $complaints = $query->paginate(10)->withQueryString();
+        $complaints = $query->paginate(5)->withQueryString();
 
         return view('admin.dashboard', compact('stats', 'complaints', 'sort'));
     }
@@ -89,10 +89,18 @@ class DashboardController extends Controller
         $recipients = $recipients->merge($upvoterEmails)->unique();
 
         foreach ($recipients as $email) {
-            Mail::to($email)->queue(new AduanStatusUpdatedMail($complaint, $validated['message'] ?? null));
+            if ($email) {
+                Mail::to($email)->send(new AduanStatusUpdatedMail($complaint, $validated['message'] ?? null));
+            }
         }
 
         return redirect()->route('admin.dashboard')
             ->with('success', "Status aduan {$complaint->ticket_code} berhasil diperbarui menjadi " . ucfirst($validated['status']) . '.');
+    }
+    public function destroy(Complaint $complaint)
+    {
+        $complaint->delete();
+        return redirect()->route('admin.dashboard')
+            ->with('success', "Aduan {$complaint->ticket_code} berhasil dihapus.");
     }
 }
