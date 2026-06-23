@@ -176,7 +176,7 @@
                     } else {
                         noResp.classList.add('hidden');
                         data.responses.forEach(r => {
-                            let photoHtml = r.photo_url ? `<img src="${r.photo_url}" alt="Bukti" class="mt-2 rounded-lg max-h-40 object-cover">` : '';
+                            let photoHtml = r.photo_url ? `<img src="${r.photo_url}" alt="Bukti" class="mt-3 rounded-lg w-full max-h-64 object-cover">` : '';
                             respContainer.innerHTML += `
                         <div class="bg-gray-50 border border-gray-200 rounded-xl p-4">
                             <div class="flex items-center justify-between mb-2">
