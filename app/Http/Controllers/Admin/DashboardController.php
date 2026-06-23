@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateComplaintRequest;
 use App\Mail\AduanStatusUpdatedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -67,7 +68,17 @@ class DashboardController extends Controller
         // Upload foto bukti perbaikan (opsional)
         $photoPath = null;
         if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('responses', 'public');
+
+            $file = $request->file('photo');
+
+            $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+            $file->move(
+                public_path('storage/responses'),
+                $fileName
+            );
+
+            $photoPath = 'responses/' . $fileName;
         }
 
         // Insert response baru
