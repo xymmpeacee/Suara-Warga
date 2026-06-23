@@ -7,6 +7,7 @@ use App\Http\Requests\StoreComplaintRequest;
 use App\Mail\AduanCreatedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class ComplaintController extends Controller
 {
@@ -19,8 +20,8 @@ class ComplaintController extends Controller
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
                 $q->where('ticket_code', 'like', "%{$search}%")
-                  ->orWhere('title', 'like', "%{$search}%")
-                  ->orWhere('address', 'like', "%{$search}%");
+                    ->orWhere('title', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%");
             });
         }
 
@@ -51,7 +52,16 @@ class ComplaintController extends Controller
         $validated = $request->validated();
 
         // Upload foto ke storage/app/public/complaints
-        $photoPath = $request->file('photo')->store('complaints', 'public');
+        $file = $request->file('photo');
+
+        $fileName = time() . '_' . Str::random(10) . '.' . $file->getClientOriginalExtension();
+
+        $file->move(
+            public_path('storage/complaints'),
+            $fileName
+        );
+
+        $photoPath = 'complaints/' . $fileName;
 
         $complaint = Complaint::create([
             'ticket_code' => Complaint::generateTicketCode(),
@@ -109,7 +119,7 @@ class ComplaintController extends Controller
             'upvote_count' => $complaint->upvote_count,
             'created_at' => $complaint->created_at->diffForHumans(),
             'created_at_formatted' => $complaint->created_at->format('d M Y, H:i'),
-            'responses' => $complaint->responses->map(fn ($r) => [
+            'responses' => $complaint->responses->map(fn($r) => [
                 'status' => ucfirst($r->status_at_response),
                 'message' => $r->message,
                 'photo_url' => $r->photo_path
