@@ -305,16 +305,16 @@
         </form>
 
         {{-- Table --}}
-        <div class="bg-white border border-gray-200 rounded-xl shadow-xl overflow-hidden">
-            <div class="overflow-x-auto">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-xl">
+            <div class="overflow-x-auto rounded-xl">
                 <table class="w-full text-sm">
                     <thead class="bg-[#f8f9fa] border-b border-gray-200">
                         <tr>
                             <th class="text-left px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Aduan</th>
-                            <th class="text-left px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest hidden md:table-cell">Lokasi</th>
-                            <th class="text-center px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest hidden lg:table-cell">Prioritas</th>
-                            <th class="text-center px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Status</th>
-                            <th class="text-center px-6 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Aksi</th>
+                            <th class="text-left px-3 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest hidden md:table-cell">Lokasi</th>
+                            <th class="text-center px-3 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Prioritas</th>
+                            <th class="text-center px-4 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Status</th>
+                            <th class="text-center px-3 py-4 text-xs font-bold text-gray-500 uppercase tracking-widest">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
@@ -326,7 +326,7 @@
                                     {{ $c->ticket_code }} &bull; {{ $c->category_label }}
                                 </p>
                             </td>
-                            <td class="px-6 py-4 hidden md:table-cell max-w-[200px]">
+                            <td class="px-3 py-4 hidden md:table-cell max-w-[200px]">
                                 <div class="flex items-start gap-1.5 text-xs text-gray-500">
                                     <svg class="w-3.5 h-3.5 text-gray-400 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
@@ -335,7 +335,7 @@
                                     <span class="line-clamp-2">{{ $c->address ?? '-' }}</span>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 hidden lg:table-cell text-center">
+                            <td class="px-3 py-4 text-center">
                                 <span class="badge badge-{{ strtolower($c->priority ?? 'sedang') }}">{{ ucfirst($c->priority ?? 'Sedang') }}</span>
                             </td>
                             <td class="px-6 py-4 text-center">

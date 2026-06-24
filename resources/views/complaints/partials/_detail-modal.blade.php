@@ -6,7 +6,7 @@
     {{-- Modal Content --}}
     <div class="relative flex items-center justify-center min-h-screen p-4">
         <div class="w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl">
-            <div class="relative bg-white max-h-[90vh] overflow-y-auto" id="detail-modal-content">
+            <div class="relative bg-white max-h-[90vh] overflow-y-auto overflow-x-hidden" id="detail-modal-content">
 
                 {{-- Header: ticket code kiri, close kanan --}}
                 <div class="flex items-center justify-between px-7 sm:px-8 pt-6 pb-4">
@@ -78,11 +78,11 @@
                             </div>
                             {{-- Upvote Form (inline) --}}
                             <div id="upvote-form-wrapper">
-                                <div class="flex gap-2">
+                                <div class="flex flex-col gap-2">
                                     <input type="email" id="upvote-email" placeholder="Masukkan email kamu"
-                                        class="flex-1 rounded-lg border-gray-300 text-sm py-2 px-3 focus:border-primary focus:ring-primary">
+                                        class="w-full rounded-lg border-gray-300 text-sm py-2 px-3 focus:border-primary focus:ring-primary">
                                     <button id="upvote-btn" onclick="submitUpvote()"
-                                        class="bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors whitespace-nowrap">
+                                        class="w-full bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-primary-600 transition-colors">
                                         Saya Juga Mengalami Ini
                                     </button>
                                 </div>

@@ -121,9 +121,39 @@
         </div>
 
         {{-- Pagination --}}
-        <div class="mt-8">
-            {{ $complaints->links() }}
+        @if($complaints->hasPages())
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white rounded-xl border border-gray-200 shadow-sm px-4 sm:px-6 py-4">
+            <span class="text-xs text-gray-500 font-medium text-center sm:text-left">
+                Menampilkan <strong>{{ $complaints->firstItem() }}–{{ $complaints->lastItem() }}</strong> dari <strong>{{ $complaints->total() }}</strong> aduan
+            </span>
+            <div class="flex items-center gap-1">
+                {{-- Prev --}}
+                @if($complaints->onFirstPage())
+                <span class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-300 cursor-not-allowed border border-gray-200">← Sebelumnya</span>
+                @else
+                <a href="{{ $complaints->previousPageUrl() }}" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-100 border border-gray-200 transition-colors">← Sebelumnya</a>
+                @endif
+
+                {{-- Page numbers --}}
+                @foreach($complaints->getUrlRange(1, $complaints->lastPage()) as $page => $url)
+                @if($page == $complaints->currentPage())
+                <span class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-bold bg-primary text-white border border-primary">{{ $page }}</span>
+                @elseif($page == 1 || $page == $complaints->lastPage() || abs($page - $complaints->currentPage()) <= 1)
+                    <a href="{{ $url }}" class="w-8 h-8 flex items-center justify-center rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-100 border border-gray-200 transition-colors">{{ $page }}</a>
+                    @elseif(abs($page - $complaints->currentPage()) == 2)
+                    <span class="w-8 h-8 flex items-center justify-center text-xs text-gray-400 border border-gray-200 rounded-lg">...</span>
+                    @endif
+                    @endforeach
+
+                    {{-- Next --}}
+                    @if($complaints->hasMorePages())
+                    <a href="{{ $complaints->nextPageUrl() }}" class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-100 border border-gray-200 transition-colors">Selanjutnya →</a>
+                    @else
+                    <span class="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-300 cursor-not-allowed border border-gray-200">Selanjutnya →</span>
+                    @endif
+            </div>
         </div>
+        @endif
         @endif
     </main>
 
@@ -135,26 +165,40 @@
     <script>
         // Mobile menu
         const menuBtn = document.getElementById('mobile-menu-btn');
-        const menuClose = document.getElementById('mobile-menu-close');
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuOverlay = document.getElementById('mobile-menu-overlay');
-        if (menuBtn) {
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.add('open');
-                menuOverlay.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
+
+        menuBtn.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                mobileMenu.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                requestAnimationFrame(() => {
+                    mobileMenu.style.opacity = '1';
+                    mobileMenu.style.transform = 'translateY(0)';
+                });
+            } else {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
+            }
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
             });
-            menuClose.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                menuOverlay.classList.add('hidden');
-                document.body.style.overflow = '';
-            });
-            menuOverlay.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                menuOverlay.classList.add('hidden');
-                document.body.style.overflow = '';
-            });
-        }
+        });
     </script>
 </body>
 

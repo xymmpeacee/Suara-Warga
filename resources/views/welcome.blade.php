@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body class="font-sans antialiased text-gray-900 bg-gray-50">
 
     @include('partials.landing.navbar')
@@ -22,28 +24,39 @@
     <script>
         // ===== Mobile Menu Toggle =====
         const menuBtn = document.getElementById('mobile-menu-btn');
-        const menuClose = document.getElementById('mobile-menu-close');
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuOverlay = document.getElementById('mobile-menu-overlay');
 
-        function openMenu() {
-            mobileMenu.classList.add('open');
-            menuOverlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeMenu() {
-            mobileMenu.classList.remove('open');
-            menuOverlay.classList.add('hidden');
-            document.body.style.overflow = '';
-        }
+        menuBtn.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                mobileMenu.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                requestAnimationFrame(() => {
+                    mobileMenu.style.opacity = '1';
+                    mobileMenu.style.transform = 'translateY(0)';
+                });
+            } else {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
+            }
+        });
 
-        menuBtn.addEventListener('click', openMenu);
-        menuClose.addEventListener('click', closeMenu);
-        menuOverlay.addEventListener('click', closeMenu);
+        document.addEventListener('click', function(e) {
+            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
+            }
+        });
 
-        // Close menu on nav link click
         mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', closeMenu);
+            link.addEventListener('click', () => {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
+            });
         });
 
         // ===== Scroll Reveal (Intersection Observer) =====
@@ -55,7 +68,10 @@
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -40px 0px'
+        });
 
         revealElements.forEach(el => revealObserver.observe(el));
 
@@ -79,7 +95,9 @@
                     countObserver.unobserve(el);
                 }
             });
-        }, { threshold: 0.5 });
+        }, {
+            threshold: 0.5
+        });
 
         countElements.forEach(el => countObserver.observe(el));
 
@@ -96,4 +114,5 @@
         });
     </script>
 </body>
+
 </html>
