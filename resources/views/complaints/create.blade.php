@@ -530,26 +530,40 @@
 
         // ===== Mobile Menu =====
         const menuBtn = document.getElementById('mobile-menu-btn');
-        const menuClose = document.getElementById('mobile-menu-close');
         const mobileMenu = document.getElementById('mobile-menu');
-        const menuOverlay = document.getElementById('mobile-menu-overlay');
-        if (menuBtn) {
-            menuBtn.addEventListener('click', () => {
-                mobileMenu.classList.add('open');
-                menuOverlay.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
+
+        menuBtn.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                mobileMenu.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+                requestAnimationFrame(() => {
+                    mobileMenu.style.opacity = '1';
+                    mobileMenu.style.transform = 'translateY(0)';
+                });
+            } else {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
+            }
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.style.opacity = '0';
+                mobileMenu.style.transform = 'translateY(-8px)';
+                setTimeout(() => mobileMenu.classList.add('hidden'), 200);
             });
-            menuClose.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                menuOverlay.classList.add('hidden');
-                document.body.style.overflow = '';
-            });
-            menuOverlay.addEventListener('click', () => {
-                mobileMenu.classList.remove('open');
-                menuOverlay.classList.add('hidden');
-                document.body.style.overflow = '';
-            });
-        }
+        });
     </script>
 </body>
 

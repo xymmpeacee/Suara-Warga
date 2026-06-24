@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav id="navbar" class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-xl border-b border-gray-100">
+<nav id="navbar" class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-xl border-b border-gray-100 overflow-visible">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             <!-- Logo -->
@@ -41,25 +41,42 @@
         </div>
     </div>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="mobile-menu fixed inset-y-0 right-0 w-72 bg-white shadow-2xl z-50 p-6 flex flex-col gap-6 md:hidden">
-        <div class="flex justify-between items-center">
-            <span class="font-bold text-gray-900">Menu</span>
-            <button id="mobile-menu-close" class="p-2 rounded-lg hover:bg-gray-100">
-                <svg class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    <!-- Mobile Menu (Dropdown style) -->
+    <!-- Mobile Menu (Dropdown style) -->
+    <div id="mobile-menu" class="mobile-menu hidden md:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div class="flex flex-col px-4 py-3">
+            <a href="{{ route('home') }}"
+                class="{{ Route::currentRouteName() === 'home' ? 'bg-primary/5 text-primary font-semibold' : 'text-gray-600' }} 
+                  flex items-center px-4 py-3 text-sm rounded-xl transition-all duration-200 hover:bg-primary/5 hover:text-primary hover:translate-x-1">
+                <svg class="w-4 h-4 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                 </svg>
-            </button>
+                Beranda
+            </a>
+            <a href="{{ route('buat-aduan') }}"
+                class="{{ Route::currentRouteName() === 'buat-aduan' ? 'bg-primary/5 text-primary font-semibold' : 'text-gray-600' }} 
+                  flex items-center px-4 py-3 text-sm rounded-xl transition-all duration-200 hover:bg-primary/5 hover:text-primary hover:translate-x-1">
+                <svg class="w-4 h-4 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                Buat Aduan
+            </a>
+            <a href="{{ route('lacak-status') }}"
+                class="{{ Route::currentRouteName() === 'lacak-status' ? 'bg-primary/5 text-primary font-semibold' : 'text-gray-600' }} 
+                  flex items-center px-4 py-3 text-sm rounded-xl transition-all duration-200 hover:bg-primary/5 hover:text-primary hover:translate-x-1">
+                <svg class="w-4 h-4 mr-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+                Lacak Status
+            </a>
         </div>
-        <div class="flex flex-col gap-2">
-            <a href="{{ route('home') }}" class="{{ Route::currentRouteName() === 'home' ? 'nav-link-active text-center py-2.5' : 'nav-link text-center py-2.5' }}">Beranda</a>
-            <a href="{{ route('buat-aduan') }}" class="{{ Route::currentRouteName() === 'buat-aduan' ? 'nav-link-active text-center py-2.5' : 'nav-link text-center py-2.5' }}">Buat Aduan</a>
-            <a href="{{ route('lacak-status') }}" class="{{ Route::currentRouteName() === 'lacak-status' ? 'nav-link-active text-center py-2.5' : 'nav-link text-center py-2.5' }}">Lacak Status</a>
-        </div>
-        <div class="flex items-center gap-2 mt-auto">
-            <span class="relative flex h-2.5 w-2.5"><span class="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 pulse-ring"></span><span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span></span>
+        <div class="flex items-center gap-2 px-8 py-3 border-t border-gray-100">
+            <span class="relative flex h-2.5 w-2.5">
+                <span class="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 pulse-ring"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+            </span>
             <span class="text-xs font-medium text-green-600">Sistem aktif</span>
         </div>
     </div>
-    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 hidden md:hidden"></div>
 </nav>
